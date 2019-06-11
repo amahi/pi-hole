@@ -53,12 +53,12 @@ lighttpdConfig=/etc/lighttpd/lighttpd.conf
 coltable=/opt/pihole/COL_TABLE
 
 # Root of the web server
-webroot="/var/www/html"
+webroot="/var/hda/web-apps/pihole/html"
 
 # We store several other directories and
 webInterfaceGitUrl="https://github.com/pi-hole/AdminLTE.git"
 webInterfaceDir="${webroot}/admin"
-piholeGitUrl="https://github.com/pi-hole/pi-hole.git"
+piholeGitUrl="https://github.com/advir29/amahi-pi-hole.git"
 PI_HOLE_LOCAL_REPO="/etc/.pihole"
 # These are the names of pi-holes files, stored in an array
 PI_HOLE_FILES=(chronometer list piholeDebug piholeLogFlush setupLCD update version gravity uninstall webpage)
@@ -247,9 +247,9 @@ if is_command apt-get ; then
     # It's useful to separate the two since our repos are also setup as "Core" code and "Web" code
     PIHOLE_WEB_DEPS=(lighttpd ${phpVer}-common ${phpVer}-cgi ${phpVer}-${phpSqlite})
     # The Web server user,
-    LIGHTTPD_USER="www-data"
+    LIGHTTPD_USER="apache"
     # group,
-    LIGHTTPD_GROUP="www-data"
+    LIGHTTPD_GROUP="apache"
     # and config file
     LIGHTTPD_CFG="lighttpd.conf.debian"
 
@@ -286,11 +286,11 @@ elif is_command rpm ; then
     INSTALLER_DEPS=(dialog git iproute newt procps-ng which)
     PIHOLE_DEPS=(bind-utils cronie curl findutils nmap-ncat sudo unzip wget libidn2 psmisc sqlite libcap)
     PIHOLE_WEB_DEPS=(lighttpd lighttpd-fastcgi php-common php-cli php-pdo)
-    LIGHTTPD_USER="lighttpd"
-    LIGHTTPD_GROUP="lighttpd"
+    LIGHTTPD_USER="apache"
+    LIGHTTPD_GROUP="apache"
     LIGHTTPD_CFG="lighttpd.conf.fedora"
     # If the host OS is Fedora,
-    if grep -qiE 'fedora|fedberry' /etc/redhat-release; then
+    if grep -qiE 'generic|fedora|fedberry' /etc/redhat-release; then
         # all required packages should be available by default with the latest fedora release
         # ensure 'php-json' is installed on Fedora (installed as dependency on CentOS7 + Remi repository)
         PIHOLE_WEB_DEPS+=('php-json')
@@ -1694,7 +1694,7 @@ installPiholeWeb() {
     echo "${LIGHTTPD_USER} ALL=NOPASSWD: /usr/local/bin/pihole" >> /etc/sudoers.d/pihole
 
     # If the Web server user is lighttpd,
-    if [[ "$LIGHTTPD_USER" == "lighttpd" ]]; then
+    if [[ "$LIGHTTPD_USER" == "apache" ]]; then
         # Allow executing pihole via sudo with Fedora
         # Usually /usr/local/bin is not permitted as directory for sudoable programs
         echo "Defaults secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin" >> /etc/sudoers.d/pihole
