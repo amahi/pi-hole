@@ -209,7 +209,8 @@ if is_command apt-get ; then
         # use iproute
         iproute_pkg="iproute"
     fi
-    # Check for and determine version number (major and minor) of current php install
+    # Check for 
+    3and determine version number (major and minor) of current php install
     if is_command php ; then
         printf "  %b Existing PHP installation detected : PHP version %s\\n" "${INFO}" "$(php <<< "<?php echo PHP_VERSION ?>")"
         printf -v phpInsMajor "%d" "$(php <<< "<?php echo PHP_MAJOR_VERSION ?>")"
