@@ -45,7 +45,7 @@ EOM
 # Location for final installation log storage
 installLogLoc=/etc/pihole/install.log
 # This is an important file as it contains information specific to the machine it's being installed on
-setupVars=/etc/pihole/setupVars.conf
+setupVars=/etc/.pihole/setupVars.conf
 # Pi-hole uses lighttpd as a Web server, and this is the config file for it
 # shellcheck disable=SC2034
 lighttpdConfig=/etc/lighttpd/lighttpd.conf
@@ -103,8 +103,8 @@ c=$(( c < 70 ? 70 : c ))
 # The runUnattended flag is one example of this
 skipSpaceCheck=false
 reconfigure=false
-runUnattended=false
-INSTALL_WEB_SERVER=true
+runUnattended=true
+INSTALL_WEB_SERVER=false
 # Check arguments for the undocumented flags
 for var in "$@"; do
     case "$var" in

@@ -10,7 +10,7 @@
 # This file is copyright under the latest version of the EUPL.
 # Please see LICENSE file for your rights under this license.
 
-readonly setupVars="/etc/pihole/setupVars.conf"
+readonly setupVars="/etc/.pihole/setupVars.conf"
 readonly dnsmasqconfig="/etc/dnsmasq.d/01-pihole.conf"
 readonly dhcpconfig="/etc/dnsmasq.d/02-pihole-dhcp.conf"
 readonly FTLconf="/etc/pihole/pihole-FTL.conf"
