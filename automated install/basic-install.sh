@@ -45,7 +45,7 @@ EOM
 # Location for final installation log storage
 installLogLoc=/etc/pihole/install.log
 # This is an important file as it contains information specific to the machine it's being installed on
-setupVars=${PI_HOLE_LOCAL_REPO}/setupVars.conf
+setupVars=${PWD}/setupVars.conf
 # Pi-hole uses lighttpd as a Web server, and this is the config file for it
 # shellcheck disable=SC2034
 lighttpdConfig=/etc/lighttpd/lighttpd.conf
@@ -1210,7 +1210,6 @@ installDefaultBlocklists() {
     if [[ -f "${adlistFile}" ]]; then
         return;
     fi
-    touch ${adListFile}
     appendToListsFile StevenBlack
     appendToListsFile MalwareDom
     appendToListsFile Cameleon
@@ -2534,6 +2533,9 @@ main() {
         # Let the user decide the FTL privacy level
         setPrivacyLevel
     else
+        #Create directory for Pi-hole storage
+        mkdir -p /etc/pihole/
+        
         # Setup adlist file if not exists
         installDefaultBlocklists
 
