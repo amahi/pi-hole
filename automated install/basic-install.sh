@@ -1210,6 +1210,7 @@ installDefaultBlocklists() {
     if [[ -f "${adlistFile}" ]]; then
         return;
     fi
+    touch ${adListFile}
     appendToListsFile StevenBlack
     appendToListsFile MalwareDom
     appendToListsFile Cameleon
