@@ -53,7 +53,7 @@ lighttpdConfig=/etc/lighttpd/lighttpd.conf
 coltable=/opt/pihole/COL_TABLE
 
 # Root of the web server
-webroot="${PWD}"
+webroot="${PWD}/html"
 
 # We store several other directories and
 webInterfaceGitUrl="https://github.com/pi-hole/AdminLTE.git"
