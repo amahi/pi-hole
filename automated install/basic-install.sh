@@ -45,7 +45,7 @@ EOM
 # Location for final installation log storage
 installLogLoc=/etc/pihole/install.log
 # This is an important file as it contains information specific to the machine it's being installed on
-setupVars=${PWD}/setupVars.conf
+setupVars=/etc/pihole/setupVars.conf
 # Pi-hole uses lighttpd as a Web server, and this is the config file for it
 # shellcheck disable=SC2034
 lighttpdConfig=/etc/lighttpd/lighttpd.conf
@@ -2535,6 +2535,9 @@ main() {
     else
         #Create directory for Pi-hole storage
         mkdir -p /etc/pihole/
+
+        #copy setupVars to original location
+        cp ./setupVars.conf /etc/pihole/setupVars.conf
         
         # Setup adlist file if not exists
         installDefaultBlocklists

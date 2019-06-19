@@ -49,7 +49,7 @@ resolver="pihole-FTL"
 haveSourceUrls=true
 
 # Source setupVars from install script
-setupVars="${PWD}/setupVars.conf"
+setupVars="${piholeDir}/setupVars.conf"
 if [[ -f "${setupVars}" ]];then
   source "${setupVars}"
 
