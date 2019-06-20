@@ -57,7 +57,10 @@ sub get_db_settings {
 }
 
 sub netmask_to_prefix () {
-    ipcalc -p 1.1.1.1 $1 | sed -n 's/^PREFIX=\(.*\)/\/\1/p';
+    my $pp = "255.255.255.0";
+    my $prefix_cidr = `ipcalc -p 1.1.1.1 $pp`;
+    $prefix_cidr =~ s/\D//g;
+    return ($prefix_cidr);
 }
 
 sub resolve_dns_ips {
@@ -95,7 +98,7 @@ sub print_setupVars {
     my $prefix = &netmask_to_prefix($netmask_size);
 	open(my $generate_settings, ">", $file_setupVars);
 	printf $generate_settings "PIHOLE_INTERFACE=$device\n";
-	printf $generate_settings "IPV4_ADDRESS=$self$prefix\n";
+	printf $generate_settings "IPV4_ADDRESS=$self/$prefix\n";
     printf $generate_settings "IPV6_ADDRESS=\n";
     printf $generate_settings "PIHOLE_DNS_1=$extdns1\n";
     printf $generate_settings "PIHOLE_DNS_2=$extdns2\n";
@@ -108,7 +111,7 @@ sub print_setupVars {
     printf $generate_settings "\n";
 	close $generate_settings;
 
-	&mv ($file_setupVars, "/home/admin/");
+	&mv ($file_setupVars, "/etc/pihole/");
 }
 
 sub main {
