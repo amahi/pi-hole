@@ -108,7 +108,6 @@ sub print_setupVars {
     printf $generate_settings "LIGHTTPD_ENABLED=false\n";
     printf $generate_settings "BLOCKING_ENABLED=true\n";
     printf $generate_settings "WEBPASSWORD=4842d773f9430b61ee2994ccde8ca60b1a4495c941594c242aeeb3767daca3d4\n";
-    printf $generate_settings "\n";
 	close $generate_settings;
 
 	&mv ($file_setupVars, "/etc/pihole/");

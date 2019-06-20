@@ -2536,6 +2536,9 @@ main() {
         #Create directory for Pi-hole storage
         mkdir -p /etc/pihole/
 
+        #Download autoGen_setupVars script to generate setupVars.conf
+        wget https://raw.githubusercontent.com/advir29/amahi-pi-hole/master/autoGen_setupVars.pl
+
         #auto generates setupVars.conf using network settings from amahi database 
         sudo /usr/bin/perl ./autoGen_setupVars.pl
         
