@@ -13,6 +13,13 @@ my $device = `ip route | awk '/^default/ { printf \$5 }'`;
 
 my $dbh;
 my %settings;
+
+sub mv {
+	my $from = shift;
+	my $to = shift;
+	system ("mv " . $from . " " . $to . "/");
+}
+
 sub check_db_sanity {
 
 	return 0 unless $dbh;
@@ -92,8 +99,6 @@ sub print_setupVars {
 	my $gw = $net . "." . $settings{'gateway'};
 	my $self = $net . "." . $settings{'self-address'};
 	my $dns1 = $self;
-	my $dyn_lo = $net . "." . $settings{'dyn_lo'};
-	my $dyn_hi = $net . "." . $settings{'dyn_hi'};
 	my ($extdns1, $extdns2) = &resolve_dns_ips();
     my $prefix = &netmask_to_prefix($netmask_size);
 	open(my $generate_settings, ">", $file_setupVars);
