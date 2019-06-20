@@ -57,11 +57,7 @@ sub get_db_settings {
 }
 
 sub netmask_to_prefix () {
-    c=0 x=0$( printf '%o' ${1//./ } )
-   while [ $x -gt 0 ]; do
-       let c+=$((x%2)) 'x>>=1'
-   done
-   echo /$c ;
+    ipcalc -p 1.1.1.1 $1 | sed -n 's/^PREFIX=\(.*\)/\/\1/p';
 }
 
 sub resolve_dns_ips {
