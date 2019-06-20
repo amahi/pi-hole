@@ -2536,8 +2536,8 @@ main() {
         #Create directory for Pi-hole storage
         mkdir -p /etc/pihole/
 
-        #copy setupVars to original location
-        cp ./setupVars.conf /etc/pihole/setupVars.conf
+        #auto generates setupVars.conf using network settings from amahi database 
+        sudo /usr/bin/perl ./autoGen_setupVars.pl
         
         # Setup adlist file if not exists
         installDefaultBlocklists
