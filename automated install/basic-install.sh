@@ -249,7 +249,7 @@ if is_command apt-get ; then
     # The Web server user,
     LIGHTTPD_USER="apache"
     # group,
-    LIGHTTPD_GROUP="apache"
+    LIGHTTPD_GROUP="users"
     # and config file
     LIGHTTPD_CFG="lighttpd.conf.debian"
 
@@ -287,7 +287,7 @@ elif is_command rpm ; then
     PIHOLE_DEPS=(bind-utils cronie curl findutils nmap-ncat sudo unzip wget libidn2 psmisc sqlite libcap)
     PIHOLE_WEB_DEPS=(lighttpd lighttpd-fastcgi php-common php-cli php-pdo)
     LIGHTTPD_USER="apache"
-    LIGHTTPD_GROUP="apache"
+    LIGHTTPD_GROUP="users"
     LIGHTTPD_CFG="lighttpd.conf.fedora"
     # If the host OS is Fedora,
     if grep -qiE 'generic|fedora|fedberry' /etc/redhat-release; then
@@ -1887,6 +1887,10 @@ installPihole() {
         if [[ ! -d "${webroot}" ]]; then
             # make the Web directory if necessary
             install -d -m 0755 ${webroot}
+            chown ${LIGHTTPD_USER}:${LIGHTTPD_GROUP} ${webroot}
+            chmod 0775 ${webroot}
+            # Give pihole access to the Web server group
+            usermod -a -G ${LIGHTTPD_GROUP} pihole
         fi
 
         if [[ "${INSTALL_WEB_SERVER}" == true ]]; then
