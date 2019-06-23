@@ -2670,6 +2670,8 @@ main() {
     if [[ "${INSTALL_TYPE}" == "Update" ]]; then
         printf "\\n"
         /usr/local/bin/pihole version --current
+        #Reboot system after update
+        reboot
     fi
 }
 
