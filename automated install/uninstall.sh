@@ -143,7 +143,7 @@ removeNoPurge() {
     if [[ -e /usr/bin/hda-ctl.orig ]]; then
         ${SUDO} rm -f /usr/bin/hda-ctl &> /dev/null
         ${SUDO} mv /usr/bin/hda-ctl.orig /usr/bin/hda-ctl
-        systemctl reload-or-restart hda-ctl
+        ${SUDO} systemctl restart hda-ctl
     fi
 
     # Restore Resolved
