@@ -129,7 +129,7 @@ removeNoPurge() {
     fi
 
     ${SUDO} rm -f /etc/dnsmasq.d/adList.conf &> /dev/null
-    ${SUDO} rm -f /etc/dnsmasq.d/01-pihole.conf &> /dev/null
+    ${SUDO} rm -f /etc/dnsmasq.d/*pihole*.conf &> /dev/null
     ${SUDO} rm -rf /var/log/*pihole* &> /dev/null
     ${SUDO} rm -rf /etc/pihole/ &> /dev/null
     ${SUDO} rm -rf /etc/.pihole/ &> /dev/null
