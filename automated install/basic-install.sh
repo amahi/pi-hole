@@ -2625,6 +2625,7 @@ main() {
     # Fixes a problem reported on Ubuntu 18.04 where trying to start
     # the service before enabling causes installer to exit
     enable_service pihole-FTL
+    restart_service hda-ctl
     restart_service pihole-FTL
 
     # Download and compile the aggregated block list
