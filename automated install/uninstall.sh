@@ -187,6 +187,8 @@ removeNoPurge() {
 
       ${COL_LIGHT_RED}Please reset the DNS on your router/clients to restore internet connectivity
       ${COL_LIGHT_GREEN}Uninstallation Complete! ${COL_NC}"
+
+    ${SUDO} systemctl restart hda-ctl
 }
 
 ######### SCRIPT ###########
