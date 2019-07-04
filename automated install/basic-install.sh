@@ -2626,7 +2626,6 @@ main() {
     # the service before enabling causes installer to exit
     enable_service pihole-FTL
     restart_service hda-ctl
-    restart_service httpd
     restart_service pihole-FTL
 
     # Download and compile the aggregated block list
@@ -2672,6 +2671,8 @@ main() {
     if [[ "${INSTALL_TYPE}" == "Update" ]]; then
         printf "\\n"
         /usr/local/bin/pihole version --current
+        #reboot system after install
+        reboot
     fi
 }
 
