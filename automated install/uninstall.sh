@@ -143,6 +143,8 @@ removeNoPurge() {
     if [[ -e /usr/bin/hda-ctl.orig ]]; then
         ${SUDO} rm -f /usr/bin/hda-ctl &> /dev/null
         ${SUDO} mv /usr/bin/hda-ctl.orig /usr/bin/hda-ctl
+        # Restore ownership of /var/lib/dnsmasq/dnsmasq.leases to root
+        ${SUDO} chown root:root /var/lib/dnsmasq/dnsmasq.leases
         ${SUDO} systemctl restart hda-ctl
     fi
 
