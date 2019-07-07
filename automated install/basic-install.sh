@@ -1940,6 +1940,8 @@ installPihole() {
     if [[ "${useUpdateVars}" == false ]]; then
         configureFirewall
     fi
+    # Grant pihole access to default dnsmasq dhcp lease file
+    chown pihole:pihole /var/lib/dnsmasq/dnsmasq.leases
 
     # install a man page entry for pihole
     install_manpage
@@ -2671,8 +2673,6 @@ main() {
     if [[ "${INSTALL_TYPE}" == "Update" ]]; then
         printf "\\n"
         /usr/local/bin/pihole version --current
-        #reload hostrecords
-        pihole -a -r
         #reboot system after install
         reboot
     fi
