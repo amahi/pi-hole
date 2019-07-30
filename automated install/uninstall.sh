@@ -10,15 +10,6 @@
 
 source "/opt/pihole/COL_TABLE"
 
-while true; do
-    read -rp "  ${QST} Are you sure you would like to remove ${COL_WHITE}Pi-hole${COL_NC}? [y/N] " yn
-    case ${yn} in
-        [Yy]* ) break;;
-        [Nn]* ) echo -e "${OVER}  ${COL_LIGHT_GREEN}Uninstall has been cancelled${COL_NC}"; exit 0;;
-        * ) echo -e "${OVER}  ${COL_LIGHT_GREEN}Uninstall has been cancelled${COL_NC}"; exit 0;;
-    esac
-done
-
 # Must be root to uninstall
 str="Root user check"
 if [[ ${EUID} -eq 0 ]]; then
@@ -102,16 +93,13 @@ removeAndPurge() {
 removeNoPurge() {
     # Only web directories/files that are created by Pi-hole should be removed
     echo -ne "  ${INFO} Removing Web Interface..."
-    ${SUDO} rm -rf /var/www/html/admin &> /dev/null
-    ${SUDO} rm -rf /var/www/html/pihole &> /dev/null
-    ${SUDO} rm -f /var/www/html/index.lighttpd.orig &> /dev/null
+    ${SUDO} rm -rf /var/hda/web-apps/pihole/html/admin &> /dev/null
+    ${SUDO} rm -rf /var/hda/web-apps/pihole/html/pihole &> /dev/null
+    ${SUDO} rm -f /var/html/index.lighttpd.orig &> /dev/null
 
     # If the web directory is empty after removing these files, then the parent html directory can be removed.
-    if [ -d "/var/www/html" ]; then
-        if [[ ! "$(ls -A /var/www/html)" ]]; then
-            ${SUDO} rm -rf /var/www/html &> /dev/null
-        fi
-    fi
+    
+    ${SUDO} rm -rf /var/hda/web-apps/pihole &> /dev/null
     echo -e "${OVER}  ${TICK} Removed Web Interface"
  
     # Attempt to preserve backwards compatibility with older versions
@@ -141,7 +129,7 @@ removeNoPurge() {
     fi
 
     ${SUDO} rm -f /etc/dnsmasq.d/adList.conf &> /dev/null
-    ${SUDO} rm -f /etc/dnsmasq.d/01-pihole.conf &> /dev/null
+    ${SUDO} rm -f /etc/dnsmasq.d/*pihole*.conf &> /dev/null
     ${SUDO} rm -rf /var/log/*pihole* &> /dev/null
     ${SUDO} rm -rf /etc/pihole/ &> /dev/null
     ${SUDO} rm -rf /etc/.pihole/ &> /dev/null
@@ -150,6 +138,15 @@ removeNoPurge() {
     ${SUDO} rm -f /etc/bash_completion.d/pihole &> /dev/null
     ${SUDO} rm -f /etc/sudoers.d/pihole &> /dev/null
     echo -e "  ${TICK} Removed config files"
+
+    # Restore hda-ctl
+    if [[ -e /usr/bin/hda-ctl.orig ]]; then
+        ${SUDO} rm -f /usr/bin/hda-ctl &> /dev/null
+        ${SUDO} mv /usr/bin/hda-ctl.orig /usr/bin/hda-ctl
+        # Restore ownership of /var/lib/dnsmasq/dnsmasq.leases to root
+        ${SUDO} chown root:root /var/lib/dnsmasq/dnsmasq.leases
+        ${SUDO} systemctl restart hda-ctl
+    fi
 
     # Restore Resolved
     if [[ -e /etc/systemd/resolved.conf.orig ]]; then
@@ -192,25 +189,9 @@ removeNoPurge() {
 
       ${COL_LIGHT_RED}Please reset the DNS on your router/clients to restore internet connectivity
       ${COL_LIGHT_GREEN}Uninstallation Complete! ${COL_NC}"
+
+    ${SUDO} systemctl restart hda-ctl
 }
 
 ######### SCRIPT ###########
-if command -v vcgencmd &> /dev/null; then
-    echo -e "  ${INFO} All dependencies are safe to remove on Raspbian"
-else
-    echo -e "  ${INFO} Be sure to confirm if any dependencies should not be removed"
-fi
-while true; do
-    echo -e "  ${INFO} ${COL_YELLOW}The following dependencies may have been added by the Pi-hole install:"
-    echo -n "    "
-    for i in "${DEPS[@]}"; do
-        echo -n "${i} "
-    done
-    echo "${COL_NC}"
-    read -rp "  ${QST} Do you wish to go through each dependency for removal? (Choosing No will leave all dependencies installed) [Y/n] " yn
-    case ${yn} in
-        [Yy]* ) removeAndPurge; break;;
-        [Nn]* ) removeNoPurge; break;;
-        * ) removeAndPurge; break;;
-    esac
-done
+removeNoPurge
